@@ -1,0 +1,7 @@
+pip3 install pyserial
+pip3 install flask
+pip3 install mysql-connector-python
+
+ls /dev/cu.*
+
+AIzaSyAqz4aALDe7Qk3CsWbvK0R_zVVGJR1ub3Y

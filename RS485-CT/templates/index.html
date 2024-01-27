@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Serial Data Sender</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS and its dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- templates/index.html -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Send Data to Serial Port</h2>
+
+          <div class="form-group">
+            <label for="floorRange" id="floorLabel">Select Floor: 1</label>
+          </div>
+          <div class="form-group">
+            <input
+              type="range"
+              class="custom-range"
+              min="1"
+              max="10"
+              value="1"
+              id="floorRange"
+            />
+          </div>
+
+          <div class="custom-control custom-switch mb-3">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="dataRateModeSwitch"
+              onchange="toggleDataRateMode(this)"
+            />
+            <label class="custom-control-label" for="dataRateModeSwitch"
+              >Data Rate Mode</label
+            >
+          </div>
+
+          <div class="mb-3">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="directMode"
+                name="mode"
+                class="custom-control-input"
+                value="direct"
+                checked
+              />
+              <label class="custom-control-label" for="directMode"
+                >Direct</label
+              >
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="routerMode"
+                name="mode"
+                class="custom-control-input"
+                value="router"
+              />
+              <label class="custom-control-label" for="routerMode"
+                >Router</label
+              >
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="manualSendMode"
+                name="sendMode"
+                class="custom-control-input"
+                value="manual"
+                checked
+              />
+              <label class="custom-control-label" for="manualSendMode"
+                >Manual Send</label
+              >
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                type="radio"
+                id="autoSendMode"
+                name="sendMode"
+                class="custom-control-input"
+                value="auto"
+              />
+              <label class="custom-control-label" for="autoSendMode"
+                >Auto Send</label
+              >
+            </div>
+          </div>
+
+          <div id="manualSend" class="form-group">
+            <input
+              type="text"
+              id="dataInput"
+              class="form-control mb-2"
+              placeholder="Enter data here"
+              onkeypress="handleKeyPress(event)"
+            />
+            <button onclick="sendData()" class="btn btn-primary btn-block">
+              Send
+            </button>
+          </div>
+
+          <div id="autoSend" class="form-group">
+            <label for="intervalInput">Set Interval (seconds):</label>
+            <input
+              type="number"
+              id="intervalInput"
+              class="form-control mb-2"
+              placeholder="(seconds >= 5)"
+            />
+            <button id="toggleAutoSend" class="btn btn-success btn-block">
+              Start Auto Send
+            </button>
+          </div>
+
+          <div id="log"></div>
+        </div>
+
+        <div class="col-md-6">
+          <div id="map"></div>
+          <div id="location">
+            <span class="coordinate">
+              <span class="coordinate-label">Lat:</span>
+              <span class="coordinate-value" id="lat-span"></span>
+            </span>
+            <span class="coordinate">
+              <span class="coordinate-label">Lng:</span>
+              <span class="coordinate-value" id="lng-span"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqz4aALDe7Qk3CsWbvK0R_zVVGJR1ub3Y&callback=initMap"
+    ></script>
+  </body>
+</html>

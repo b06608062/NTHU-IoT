@@ -1,0 +1,111 @@
+.notification {
+  display: none;
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  padding: 12px 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  z-index: 1050;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: top 0.5s ease, opacity 0.5s ease;
+}
+.notification-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.notification-error {
+  background-color: #f8d7da;
+  color: #a60919;
+}
+.notification-slide-in {
+  animation: slideIn 0.5s forwards;
+}
+.notification-slide-out {
+  animation: slideOut 0.5s forwards;
+}
+@keyframes slideIn {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+  to {
+    top: 10px;
+    opacity: 1;
+  }
+}
+@keyframes slideOut {
+  from {
+    top: 0;
+    opacity: 1;
+  }
+  to {
+    top: -100px;
+    opacity: 0;
+  }
+}
+
+#map {
+  height: 80vh;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+#location {
+  font-size: 16px;
+  margin-top: 10px;
+}
+.coordinate {
+  display: inline-block;
+  margin-right: 15px;
+}
+.coordinate-label {
+  font-weight: bold;
+}
+.coordinate-value {
+  padding-left: 5px;
+}
+
+#floorLabel {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.custom-range {
+  width: 50%;
+  margin: 0 auto;
+}
+
+#log {
+  height: 250px;
+  overflow-y: scroll;
+  background-color: whitesmoke;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Courier New", monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9em;
+}
+#log div {
+  margin: 5px 0;
+}
+.success-message {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 2px 4px;
+  border-radius: 2px;
+}

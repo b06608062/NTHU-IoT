@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Location Sender</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="location">
+      <span class="coordinate">
+        <span class="coordinate-label">Lat:</span>
+        <span class="coordinate-value" id="lat-span"></span>
+      </span>
+      <span class="coordinate">
+        <span class="coordinate-label">Lng:</span>
+        <span class="coordinate-value" id="lng-span"></span>
+      </span>
+    </div>
+    <div class="button-container">
+      <button type="button" onclick="sendPosition()" class="button-custom">
+        Get my location
+      </button>
+    </div>
+
+    <script>
+      var map;
+      var marker;
+      var latitude;
+      var longitude;
+      function initMap() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              latitude = position.coords.latitude;
+              longitude = position.coords.longitude;
+              $("#lat-span").text(latitude);
+              $("#lng-span").text(longitude);
+
+              map = new google.maps.Map($("#map")[0], {
+                center: pos,
+                zoom: 18,
+                draggableCursor: "default",
+                clickableIcons: false,
+              });
+
+              marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: "Your location",
+              });
+
+              map.addListener("click", function (e) {
+                placeMarkerAndPanTo(e.latLng, map);
+              });
+            },
+            function () {
+              console.error("Geolocation failed: " + error.message);
+            }
+          );
+        } else {
+          console.error("Browser doesn't support geolocation.");
+        }
+      }
+
+      function placeMarkerAndPanTo(latLng, map) {
+        marker.setPosition(latLng);
+        latitude = latLng.lat();
+        longitude = latLng.lng();
+        $("#lat-span").text(latitude);
+        $("#lng-span").text(longitude);
+        map.panTo(latLng);
+      }
+      function sendPosition() {
+        if (typeof latitude !== "number" || typeof longitude !== "number") {
+          console.error("Location is not available.");
+          alert("Location is not available. Please try again.");
+          return;
+        }
+        $(".button-custom").remove();
+
+        $.ajax({
+          url: "/send",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            latitude: latitude,
+            longitude: longitude,
+          }),
+          success: function (response) {
+            console.log("Location sent!", response);
+          },
+          error: function (xhr, status, error) {
+            console.error("Error sending location:", error);
+          },
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqz4aALDe7Qk3CsWbvK0R_zVVGJR1ub3Y&callback=initMap"
+    ></script>
+    <style>
+      #map {
+        height: 80vh;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      #location {
+        font-size: 16px;
+        margin-top: 10px;
+      }
+      .coordinate {
+        display: inline-block;
+        margin-right: 15px;
+      }
+      .coordinate-label {
+        font-weight: bold;
+      }
+      .coordinate-value {
+        padding-left: 5px;
+      }
+
+      .button-container {
+        text-align: right;
+      }
+      .button-custom {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+      .button-custom:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </body>
+</html>

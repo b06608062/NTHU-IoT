@@ -1,0 +1,9 @@
+# macOS 系統檔案
+.DS_Store
+
+# Python 虛擬環境資料夾
+.venv/
+
+# Python 編譯檔案
+__pycache__/
+
